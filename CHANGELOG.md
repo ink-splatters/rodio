@@ -1,3 +1,32 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+
+### Changed
+- `Source` trait is now also implemented for `Box<dyn Source>` and `&mut Source`
+- `fn new_vorbis` is now also available when the `symphonia-vorbis` feature is enabled
+
+### Added 
+- Adds a new method `try_seek` to all sources. It returns either an error or
+  seeks to the given position. A few sources are "unsupported" they return the
+  error `Unsupported`.
+- Adds `SpatialSink::clear()` bringing it in line with `Sink`
+
+### Fixed
+- channel upscaling now follows the 'WAVEFORMATEXTENSIBLE' format and no longer
+  repeats the last source channel on all extra output channels. 
+  Stereo content playing on a 5.1 speaker set will now only use the front left
+  and front right speaker instead of repeating the right sample on all speakers
+  except the front left one.
+- `mp3::is_mp3()` no longer changes the position in the stream when the stream
+  is mp3
+
 # Version 0.17.3 (2023-10-23)
 
 - Build fix for `minimp3` backend.

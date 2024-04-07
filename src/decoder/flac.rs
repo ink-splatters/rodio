@@ -3,6 +3,7 @@ use std::io::{Read, Seek, SeekFrom};
 use std::mem;
 use std::time::Duration;
 
+use crate::source::SeekError;
 use crate::Source;
 
 use claxon::FlacReader;
@@ -79,6 +80,13 @@ where
         self.samples
             .map(|s| Duration::from_micros(s * 1_000_000 / self.sample_rate as u64))
     }
+
+    #[inline]
+    fn try_seek(&mut self, _: Duration) -> Result<(), SeekError> {
+        Err(SeekError::NotSupported {
+            underlying_source: std::any::type_name::<Self>(),
+        })
+    }
 }
 
 impl<R> Iterator for FlacDecoder<R>
@@ -107,7 +115,7 @@ where
 
             // Load the next block.
             self.current_block_off = 0;
-            let buffer = mem::replace(&mut self.current_block, Vec::new());
+            let buffer = mem::take(&mut self.current_block);
             match self.reader.blocks().read_next_or_eof(buffer) {
                 Ok(Some(block)) => {
                     self.current_block_channel_len = (block.len() / block.channels()) as usize;
