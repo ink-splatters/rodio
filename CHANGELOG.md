@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Mp4a with decodable tracks after undecodable tracks now play. This matches
+  VLC's behaviour.
+
+# Version 0.18.1 (2024-05-23)
+
+### Fixed
+- Seek no longer hangs if the sink is empty.
+
+# Version 0.18.0 (2024-05-05)
 
 ### Changed
 - `Source` trait is now also implemented for `Box<dyn Source>` and `&mut Source`
