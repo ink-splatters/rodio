@@ -195,4 +195,16 @@ impl SpatialSink {
     pub fn try_seek(&self, pos: Duration) -> Result<(), SeekError> {
         self.sink.try_seek(pos)
     }
+
+    /// Returns the position of the sound that's being played.
+    ///
+    /// This takes into account any speedup or delay applied.
+    ///
+    /// Example: if you apply a speedup of *2* to an mp3 decoder source and
+    /// [`get_pos()`](Sink::get_pos) returns *5s* then the position in the mp3
+    /// recording is *10s* from its start.
+    #[inline]
+    pub fn get_pos(&self) -> Duration {
+        self.sink.get_pos()
+    }
 }
